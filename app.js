@@ -43,7 +43,7 @@ function sendNotifs(){
                         console.log(b)
                         client.messages 
                         .create({ 
-                        body: 'FindACovidTest.org Notification - ' + b.testType + ' is in stock at ' + b.store + '. More details here: ' + 'https://www.findacovidtest.org/#' + b._id + '?utm_source=sms.' + ' To continue to receive notifications click here: ' + 'https://notifications.findacovidtest.org/notification/create?id=' + b.id,  
+                        body: 'FindACovidTest.org Notification - ' + b.testType + ' is in stock at ' + b.store + '. More details here: ' + 'https://www.findacovidtest.org/?utm_source=sms#' + b._id + '.' + ' To continue to receive notifications click here: ' + 'https://notifications.findacovidtest.org/notification/create?id=' + b.id,  
                         messagingServiceSid: 'MG094543300f7640dcb2cb4253d67fa259',      
                         to: '+1' + l.phoneNumber
                         }) 
