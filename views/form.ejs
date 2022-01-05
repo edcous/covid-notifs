@@ -22,7 +22,7 @@
             <input class="form-control mb-4" type="text" id="store" name="store" value="<%= stock.store %>" disabled>
         </div>
         <div class="col-auto">
-            Phone number:
+            Cell phone number (US Phone Numbers only):
         </div>
         <div class="col-md-4">
             <input class="form-control mb-4" type="text" id="pn" name="pn" value="">
@@ -55,7 +55,7 @@
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         if(reload !== 'false' && reload !== 'falseReload'){
-                            window.location = '/done'
+                            window.location = '/done?number=' + pn.value
                         }
                         else if(reload == 'falseReload'){
                         const dataElement = document.querySelector('#' + resultId);

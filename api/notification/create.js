@@ -5,7 +5,8 @@ const router = express.Router()
 const Notifications = require('../../models/notification.js')
 
 router.post('/create', async (req, res) => {
-    const pn = req.body["pn"]
+    const pn = req.body["pn"].replace(/\D+/g, '');
+    console.log(pn)
     const id = req.body["id"]
     if(pn == "" || id == ""){
         res.status(400).send('Please make sure a phone number & id is entered.')

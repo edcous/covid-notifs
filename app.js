@@ -23,7 +23,7 @@ app.get('/notification/create/', function(req, res, next) {
 });
 
 app.get('/done', function(req,res, next) {
-    res.render('done')
+    res.render('done', { number: req.query.number })
 })
 
 app.listen(port, () => {
@@ -43,7 +43,7 @@ function sendNotifs(){
                         console.log(b)
                         client.messages 
                         .create({ 
-                        body: 'FindACovidTest.org Notification - ' + b.testType + ' is in stock at ' + b.store + '. More details here: ' + 'http://localhost:8080/#' + b._id,  
+                        body: 'FindACovidTest.org Notification - ' + b.testType + ' is in stock at ' + b.store + '. More details here: ' + 'https://www.findacovidtest.org/#' + b._id,  
                         messagingServiceSid: 'MG094543300f7640dcb2cb4253d67fa259',      
                         to: '+1' + l.phoneNumber
                         }) 
