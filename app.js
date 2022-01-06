@@ -33,27 +33,24 @@ app.listen(port, () => {
 app.use('/api/notif', require('./api/notification/create'))
 
 function sendNotifs(){
-    Stock.find({isInStock: true}).sort({store: 1, testType: 1}).exec(function(err, s) {
-        const client = require('twilio')(accountSid, authToken);
-        s.forEach(function(u){
-            Notifications.find({testID: u._id}).exec(function(err, n) {
-                console.log(n)
-                n.forEach(function(l){
-                    Notifications.deleteOne({_id: l._id}, (err, result) => {
+    const client = require('twilio')(accountSid, authToken);
+    Notifications.find({}).exec(function(err, n) {
+        n.forEach(function(m){
+            Stock.findOne({_id: m.testID}).exec(function(err, b) {
+                if(b.isInStock){
+                    console.log(b)
+                    client.messages 
+                    .create({ 
+                    body: 'FindACovidTest.org Notification - ' + b.testType + ' is in stock at ' + b.store + '. More details here: ' + 'https://www.findacovidtest.org/?utm_source=sms#' + b._id + '.' + ' To continue to receive notifications click here: ' + 'https://notifications.findacovidtest.org/notification/create?id=' + b.id,  
+                    messagingServiceSid: 'MG094543300f7640dcb2cb4253d67fa259',      
+                    to: '+1' + m.phoneNumber
+                    }) 
+                    .then(message => console.log(message.sid)) 
+                    .done();
+                    Notifications.deleteOne({_id: m._id}, (err, result) => {
                         if (err) return console.log(err)
                     })
-                    Stock.findOne({_id: l.testID}).exec(function(err, b) {
-                        console.log(b)
-                        client.messages 
-                        .create({ 
-                        body: 'FindACovidTest.org Notification - ' + b.testType + ' is in stock at ' + b.store + '. More details here: ' + 'https://www.findacovidtest.org/?utm_source=sms#' + b._id + '.' + ' To continue to receive notifications click here: ' + 'https://notifications.findacovidtest.org/notification/create?id=' + b.id,  
-                        messagingServiceSid: 'MG094543300f7640dcb2cb4253d67fa259',      
-                        to: '+1' + l.phoneNumber
-                        }) 
-                        .then(message => console.log(message.sid)) 
-                        .done();
-                    })
-                })
+                }
             })
         })
     })
