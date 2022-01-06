@@ -39,6 +39,9 @@ function sendNotifs(){
             Notifications.find({testID: u._id}).exec(function(err, n) {
                 console.log(n)
                 n.forEach(function(l){
+                    Notifications.deleteOne({_id: l._id}, (err, result) => {
+                        if (err) return console.log(err)
+                    })
                     Stock.findOne({_id: l.testID}).exec(function(err, b) {
                         console.log(b)
                         client.messages 
@@ -48,10 +51,7 @@ function sendNotifs(){
                         to: '+1' + l.phoneNumber
                         }) 
                         .then(message => console.log(message.sid)) 
-                        .done();     
-                        Notifications.deleteOne({_id: l._id}, (err, result) => {
-                            if (err) return console.log(err)
-                        })
+                        .done();
                     })
                 })
             })
