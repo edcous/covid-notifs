@@ -8,8 +8,8 @@ router.post('/create', async (req, res) => {
     const pn = req.body["pn"].replace(/\D+/g, '');
     console.log(pn)
     const id = req.body["id"]
-    if(pn == "" || id == ""){
-        res.status(400).send('Please make sure a phone number & id is entered.')
+    if(pn == "" || id == "" || pn.length != 10){
+        res.status(400).send('Please make sure a valid phone number is entered.')
     }
     else{
         Notifications.count({testID: id, phoneNumber: pn}, function (err, n){
