@@ -11,6 +11,6 @@ var notifSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   }
-}, { collection: 'notifications2' });
+}, { collection: 'notifications' });
 
 module.exports = mongoose.model('Notification', notifSchema)
