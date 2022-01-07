@@ -34,7 +34,7 @@ app.use('/api/notif', require('./api/notification/create'))
 
 function sendNotifs(){
     const client = require('twilio')(accountSid, authToken);
-    Notifications.find({sent: false}).exec(function(err, n) {
+    Notifications.find({sent: {$ne: true}}).exec(function(err, n) {
         n.forEach(function(m){
             Stock.findOne({_id: m.testID}).exec(function(err, b) {
                 if(b.isInStock){
