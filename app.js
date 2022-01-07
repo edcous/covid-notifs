@@ -7,7 +7,7 @@ const cron = require('node-cron');
 
 const connection = require('./config/db.config.js')
 const Stock = require('./models/stock.js')
-const Notifications = require('./models/notification.js')
+const Notifications2 = require('./models/notification.js')
 const accountSid = process.env.twillio_account; 
 const authToken = process.env.twillio_auth; 
 
@@ -34,11 +34,11 @@ app.use('/api/notif', require('./api/notification/create'))
 
 function sendNotifs(){
     const client = require('twilio')(accountSid, authToken);
-    Notifications.find({sent: {$ne: true}}).exec(function(err, n) {
+    Notifications2.find({sent: {$ne: true}}).exec(function(err, n) {
         n.forEach(function(m){
             Stock.findOne({_id: m.testID}).exec(function(err, b) {
                 if(b.isInStock){
-                    Notifications.findOneAndUpdate({_id: m._id}, {sent:true}, {upsert: false}, function(err, doc) {
+                    Notifications2.findOneAndUpdate({_id: m._id}, {sent:true}, {upsert: false}, function(err, doc) {
                         console.log(b)
                         client.messages 
                         .create({ 
