@@ -12,7 +12,7 @@ router.post('/create', async (req, res) => {
         res.status(400).send('Please make sure a valid phone number is entered.')
     }
     else{
-        Notifications.count({testID: id, phoneNumber: pn}, function (err, n){
+        Notifications.count({testID: id, phoneNumber: pn, sent: {$ne: true}}, function (err, n){
             if(n != 0){
                 res.status(400).send('A notification with this test and phone number already exists.')        
             }
