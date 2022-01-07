@@ -6,6 +6,10 @@ var notifSchema = new mongoose.Schema({
   },
   testID: {
     type: String
+  },
+  sent:{
+    type: Boolean,
+    default: false
   }
 });
 

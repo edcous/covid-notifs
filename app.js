@@ -34,10 +34,11 @@ app.use('/api/notif', require('./api/notification/create'))
 
 function sendNotifs(){
     const client = require('twilio')(accountSid, authToken);
-    Notifications.find({}).exec(function(err, n) {
+    Notifications.find({sent: false}).exec(function(err, n) {
         n.forEach(function(m){
             Stock.findOne({_id: m.testID}).exec(function(err, b) {
                 if(b.isInStock){
+                    Notifications.findOneAndUpdate({_id: m._id}, {sent:true}, {upsert: false}, function(err, doc) {});
                     console.log(b)
                     client.messages 
                     .create({ 
@@ -47,9 +48,6 @@ function sendNotifs(){
                     }) 
                     .then(message => console.log(message.sid)) 
                     .done();
-                    Notifications.deleteOne({_id: m._id}, (err, result) => {
-                        if (err) return console.log(err)
-                    })
                 }
             })
         })
