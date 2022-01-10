@@ -36,9 +36,11 @@ function sendNotifs(){
     const client = require('twilio')(accountSid, authToken);
     Notifications2.find({sent: {$ne: true}}).exec(function(err, n) {
         n.forEach(function(m){
-            console.log(m)
             Stock.findOne({_id: m.testID}).exec(function(err, b) {
-                if(b.isInStock){
+                if(b == null){
+                    console.log('null stock - id is ' + m.testID)
+                }
+                else if(b.isInStock){
                     Notifications2.findOneAndUpdate({_id: m._id}, {sent:true}, {upsert: false}, function(err, doc) {
                         console.log(b)
                         client.messages 
